@@ -2,3 +2,4 @@
 *.rdb
 *.log
 *.xml
+db.sqlite3

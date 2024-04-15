@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-blue-900 to-purple-900 text-white">
+    <div class="flex flex-col h-screen">
+        <!-- Sidebar -->
+        <div class="flex-none w-64 bg-black bg-opacity-50 p-6">
+            <!-- Profile and stats -->
+            <div class="flex items-center space-x-4">
+                <img src="https://placehold.co/50x50" alt="Profile picture placeholder" class="rounded-full h-12 w-12">
+                <div>
+                    <div class="font-semibold">Orreco</div>
+                    <div class="text-sm text-gray-400">关注 29 | 粉丝 1.1千 | 获赞 12 | 抖音号 0</div>
+                </div>
+            </div>
+            <!-- Navigation -->
+            <div class="mt-6">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i class="fas fa-home text-white text-lg"></i>
+                    <span>首页</span>
+                </div>
+                <!-- ... other navigation items ... -->
+            </div>
+            <!-- Settings and help -->
+            <div class="mt-auto">
+                <div class="flex items-center space-x-3 mb-3">
+                    <i class="fas fa-cog text-white text-lg"></i>
+                    <span>设置</span>
+                </div>
+                <div class="flex items-center space-x-3 mb-3">
+                    <i class="fas fa-question-circle text-white text-lg"></i>
+                    <span>帮助</span>
+                </div>
+            </div>
+        </div>
+        <!-- Main content -->
+        <div class="flex-1 p-6">
+            <!-- Search bar -->
+            <div class="flex justify-center">
+                <div class="flex space-x-4 items-center">
+                    <i class="fas fa-angle-left text-white text-2xl"></i>
+                    <input class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md" placeholder="搜索你感兴趣的内容" type="text">
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="flex justify-center items-center h-full">
+                <div class="text-center">
+                    <img src="https://placehold.co/100x100" alt="Illustration of a person with a magnifying glass looking at a file" class="mx-auto mb-4">
+                    <div class="text-lg">暂无内容</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
