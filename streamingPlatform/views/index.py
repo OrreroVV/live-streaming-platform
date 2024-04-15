@@ -58,12 +58,19 @@ def user_info(request):
         user_name = users.user_name
         uid = users.uid
         login_uid = login_user.username
+
+        fans = Fans.objects.filter(follower=main_uid)
+        followers = Fans.objects.filter(fan=main_uid)
+
+        fans = fans.count() if fans else 0
+        followers = followers.count() if followers else 0
+        print(main_uid, fans, followers)
         if login_uid == main_uid:
             print("get: self", login_uid, user_name, url, uid)
-            return render(request, "user_info_self.html", {"login_uid": login_uid, "user_name": user_name, "url": url, "uid": uid})
+            return render(request, "user_info_self.html", {"fans": fans, "followers": followers, "login_uid": login_uid, "user_name": user_name, "url": url, "uid": uid})
         else:
             print("get: user", login_uid, user_name, url, uid)
-            return render(request, "user_info.html", {"login_uid": login_uid, "user_name": user_name, "url": url, "uid": uid})
+            return render(request, "user_info.html", {"fans": fans, "followers": followers, "login_uid": login_uid, "user_name": user_name, "url": url, "uid": uid})
 
 
 

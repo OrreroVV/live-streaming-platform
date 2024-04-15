@@ -142,7 +142,7 @@
                             id="follow"
                           >
                             <div>关注:</div>
-                            <div>1</div>
+                            <div>{{ followers }}</div>
                           </div>
                         </div>
                         <div>|</div>
@@ -152,7 +152,7 @@
                             id="fans"
                           >
                             <div>粉丝:</div>
-                            <div>1</div>
+                            <div>{{ fans }}</div>
                           </div>
                         </div>
                         <div>|</div>
@@ -260,11 +260,11 @@
             window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
         });
         document.getElementById('follow').addEventListener('click', function () {
-            alert('关注被点击')
+          window.location.href = "{% url 'follow' %}";
         })
 
         document.getElementById('fans').addEventListener('click', function () {
-            alert('粉丝被点击')
+          window.location.href = "{% url 'fan' %}";
         })
 
         document.getElementById('live_').addEventListener('click', function () {
