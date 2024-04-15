@@ -1,10 +1,93 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #f12711, #f5af19);
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .login-form {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 300px;
+      }
+      .login-form h2 {
+        text-align: center;
+        color: #333;
+      }
+      input[type='text'],
+      input[type='password'] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+    </style>
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+  </head>
+  <body>
+    <div class="login-form">
+      <h2>登录</h2>
+      <input type="text" id="Username" placeholder="Username" required /><br />
+      <input
+        type="password"
+        id="Password"
+        placeholder="Password"
+        required
+      /><br />
+      <button type="submit" id="loginButton">登录</button>
+        <a href="{% url 'register' %}">还没账号？去注册</a>
+        <p id="message"></p>
+    </div>
+
+    <script>
+      $button = $('#loginButton')
+      $button.click(function () {
+        let username = $('#Username').val();
+        let password = $('#Password').val();
+        $.ajax({
+          url: '/api/Signin',
+          type: 'GET',
+          data: {
+            username: username,
+            password: password,
+          },
+          success: (resp) => {
+            let res = resp['result']
+            console.log(res)
+              if (res === "success"){
+                  window.location.href = " {% url 'user_info' %}?uid=" + username;
+              }
+              else{
+
+              }
+          },
+          error: () => {},
+        })
+      })
+    </script>
+  </body>
 </html>

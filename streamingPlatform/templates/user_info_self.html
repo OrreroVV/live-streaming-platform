@@ -125,8 +125,8 @@
                       alt="Profile picture placeholder"
                       class="rounded-full"
                       height="100"
-                      src="https://p3-pc-sign.douyinpic.com/aweme-avatar/tos-cn-i-0813c001_oQlkCJk0IAeGCCwAE1ATNAAkA9fGqNN7Fg5zgh~tplv-8yspqt5zfm-300x300.webp?x-expires=1708657200&x-signature=VxJePBjqbF3FraTYKPKXQhk5aiI%3D&from=2480802190"
                       width="100"
+                      src="{{ url }}"
                     />
                   </div>
                 </div>
@@ -257,7 +257,7 @@
     <script>
         let my = $('#my');
         my.click(function () {
-            window.location.href = {% url 'user_info' %};
+            window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
         });
         document.getElementById('follow').addEventListener('click', function () {
             alert('关注被点击')
@@ -268,7 +268,7 @@
         })
 
         document.getElementById('live_').addEventListener('click', function () {
-            window.location.href = {% url 'signin' %};
+            window.location.href = {% url 'all_stream' %};
 
       })
 

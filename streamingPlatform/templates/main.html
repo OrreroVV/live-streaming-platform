@@ -1,10 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抖音网页版</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .menu-item {
+            margin-bottom: 15px;
+            cursor: pointer;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        .menu-item img {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-$END$
+    <div class="sidebar">
+        <div class="menu-item" id="myButton">
+            <img src="icons/my_icon.png" alt="我的图标">
+            我的
+        </div>
+        <div class="menu-item" id="liveButton">
+            <img src="icons/live_icon.png" alt="直播图标">
+            直播
+        </div>
+        <div class="menu-item" id="followingButton">
+            <img src="icons/following_icon.png" alt="关注图标">
+            关注
+        </div>
+        <div class="menu-item" id="friendsButton">
+            <img src="icons/friends_icon.png" alt="朋友图标">
+            朋友
+        </div>
+    </div>
+    <div class="content">
+        <h1>欢迎来到抖音网页版</h1>
+        <p>这里是您可以浏览各种有趣视频的地方！</p>
+    </div>
+
+    <script>
+        document.getElementById("myButton").addEventListener("click", function() {
+            window.location.href = 'my_page.html';
+        });
+
+        document.getElementById("liveButton").addEventListener("click", function() {
+            window.location.href = 'live_page.html';
+        });
+
+        document.getElementById("followingButton").addEventListener("click", function() {
+            window.location.href = 'following_page.html';
+        });
+
+        document.getElementById("friendsButton").addEventListener("click", function() {
+            window.location.href = 'friends_page.html';
+        });
+    </script>
 </body>
 </html>

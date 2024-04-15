@@ -277,43 +277,40 @@
 
 
     $.ajax({
-        url: '/api/getfollows',
+        url: '/api/getfans',
         type: 'GET',
         data: {},
         success: (resp) => {
             let lists = resp['res']
-            lists.forEach(function (follow) {
-                console.log(follow)
-                console.log(follow['uid']);
+            console.log(lists);
+            lists.forEach(function (fan) {
                 const $friendBox = $('<div>').addClass('friend-box');
                 $friendBox.html(`
                 <div style="width:100%;">
-    <img src="${follow['img_url']}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; float: left; margin-right: 10px;">
-    <h3 style="display: inline-block; margin: 0;">${follow['name']}</h3>
-    <button class="unfollowBtn" id="unfollowBtn" style="padding-right: 5px;font-size: 20px;">取消关注</button></div>
+    <img src="${fan['img_url']}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; float: left; margin-right: 10px;">
+    <h3 style="display: inline-block; margin: 0;">${fan['name']}</h3>
+    <button class="unfollowBtn" id="unfollowBtn" style="padding-right: 5px;font-size: 20px;">移除粉丝</button></div>
         `);
-
+                console.log(fan['uid'])
                 $friendBox.on("click", function (event) {
                     // 在这里定义点击事件触发时执行的操作
                     if ($(event.target).hasClass("unfollowBtn")) {
                         $.ajax({
-                            url: '/api/cancelFollow',
+                            url: '/api/cancelfan',
                             type: 'GET',
                             data: {
-                                follow: follow['uid']
+                                fan: fan['uid']
                             },
                             success: (resp) => {
-                                window.location.href = "{% url 'follow' %}";
+                                window.location.href = "{% url 'fan' %}";
                             },
                             error: () => {
 
                             },
                         })
 
-
-
                     } else {
-                        let url = "{% url 'user_info' %}?uid=" + follow['uid'];
+                        let url = "{% url 'user_info' %}?uid=" + fan['uid'];
                         console.log("url: ", url);
                         window.location.href = url;
                     }

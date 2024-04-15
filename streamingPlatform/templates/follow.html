@@ -34,6 +34,66 @@
               margin-top: 30px;
 
           } */
+
+
+        .scroll-box {
+            width: 90%;
+            height: 55vh;
+            overflow-y: auto;
+            border: 1px solid #ccc; /* 为了可见效果添加边框 */
+            box-sizing: border-box;
+        }
+
+        /* 隐藏浏览器默认滚动条 */
+        .scroll-box::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        /* 轨道 */
+        .scroll-box::-webkit-scrollbar-track {
+            background-color: transparent; /* 设置轨道背景颜色为透明 */
+        }
+
+        /* 滑块 */
+        .scroll-box::-webkit-scrollbar-thumb {
+            background-color: transparent; /* 设置滑块颜色为透明 */
+            border-radius: 10px;
+        }
+
+        /* 滑块悬停时 */
+        .scroll-box::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.2); /* 设置滑块悬停时的颜色（可选）*/
+        }
+
+        .friend-box {
+            height: 60px;
+            width: 98%;
+            padding: 10px;
+            margin: 5px;
+            display: flex; /* 设置为 Flex 布局 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .friend-box img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .friend-box h3 {
+            margin: 0;
+        }
+
+        .friend-box button {
+            float: right;
+            background-color: rgba(53, 45, 136, 70); /* 设置按钮背景颜色为蓝色 */
+            color: white; /* 设置文字颜色为白色 */
+            border: none; /* 移除默认边框 */
+            padding: 5px 10px; /* 添加内边距 */
+            margin-top: 10px; /* 设置上外边距 */
+            border-radius: 20px; /* 设置圆角边框半径，根据需要调整大小 */
+        }
     </style>
 </head>
 
@@ -55,7 +115,7 @@
                         <i class="fas fa-home text-white text-lg"> </i>
                         <span> 首页 </span>
                     </div>
-                    <div class="flex items-center space-x-3 mb-3" id="follow">
+                    <div class="flex items-center space-x-3 mb-3" id="follows">
                         <i class="fas fa-user-friends text-white text-lg"> </i>
                         <span> 关注 </span>
                     </div>
@@ -137,7 +197,7 @@
 
                         <div class="col-11">
                             <div class="intro">
-                                <div class="font-semibold">{{ user_name }}</div>
+                                <div class="font-semibold">{{ name }}</div>
                                 <div style="display: flex">
                                     <div class="text-sm text-gray-400" style="display: flex">
                                         <div>
@@ -146,7 +206,7 @@
                                                     id="follow"
                                             >
                                                 <div>关注:</div>
-                                                <div>1</div>
+                                                <div>{{ follows }}</div>
                                             </div>
                                         </div>
                                         <div>|</div>
@@ -156,14 +216,14 @@
                                                     id="fans"
                                             >
                                                 <div>粉丝:</div>
-                                                <div>1</div>
+                                                <div>{{ fans }}</div>
                                             </div>
                                         </div>
                                         <div>|</div>
                                         <div>
                                             <div style="display: flex; font-size: 1.4em">
-                                                <div>抖音号:</div>
-                                                <div>{{ uid }}</div>
+                                                <div>账号:</div>
+                                                <div>{{ login_uid }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -181,9 +241,10 @@
                     <div style="width: 200px; height: 50px"></div>
                 </div>
 
-
-                <div class="row">
-                    <div style="width: 200px; height: 50px">hello</div>
+                <div class="mt-6">
+                    <div class="row" style="font-size: 2em">
+                        <div id="follow_list" class="scroll-box"></div>
+                    </div>
                 </div>
 
             </div>
@@ -198,18 +259,76 @@
     my.click(function () {
         window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
     });
-    document.getElementById('follow').addEventListener('click', function () {
-        alert('关注被点击')
+    document.getElementById('follows').addEventListener('click', function () {
+        window.location.href = "{% url 'follow' %}";
     })
 
     document.getElementById('fans').addEventListener('click', function () {
-        alert('粉丝被点击')
+        window.location.href = "{% url 'fan' %}";
     })
 
     document.getElementById('live_').addEventListener('click', function () {
         window.location.href = {% url 'all_stream' %};
-
     })
+
+
+    // 获取要插入好友信息的容器
+    const $friendList = $('#follow_list');
+
+
+    $.ajax({
+        url: '/api/getfollows',
+        type: 'GET',
+        data: {},
+        success: (resp) => {
+            let lists = resp['res']
+            lists.forEach(function (follow) {
+                console.log(follow)
+                console.log(follow['uid']);
+                const $friendBox = $('<div>').addClass('friend-box');
+                $friendBox.html(`
+                <div style="width:100%;">
+    <img src="${follow['img_url']}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; float: left; margin-right: 10px;">
+    <h3 style="display: inline-block; margin: 0;">${follow['name']}</h3>
+    <button class="unfollowBtn" id="unfollowBtn" style="padding-right: 5px;font-size: 20px;">取消关注</button></div>
+        `);
+
+                $friendBox.on("click", function (event) {
+                    // 在这里定义点击事件触发时执行的操作
+                    if ($(event.target).hasClass("unfollowBtn")) {
+                        $.ajax({
+                            url: '/api/cancelFollow',
+                            type: 'GET',
+                            data: {
+                                follow: follow['uid']
+                            },
+                            success: (resp) => {
+                                window.location.href = "{% url 'follow' %}";
+                            },
+                            error: () => {
+
+                            },
+                        })
+
+
+
+                    } else {
+                        let url = "{% url 'user_info' %}?uid=" + follow['uid'];
+                        console.log("url: ", url);
+                        window.location.href = url;
+                    }
+                });
+                $friendList.append($friendBox);
+            });
+
+
+        },
+        error: () => {
+
+        },
+    })
+
+
 </script>
 </body>
 </html>

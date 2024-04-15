@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Live</title>
+    <meta charset="utf-8">
+    <link href="http://vjs.zencdn.net/5.5.3/video-js.css" rel="stylesheet">
+    <!-- If you'd like to support IE8 -->
+    <script src="http://vjs.zencdn.net/ie8/1.1.1/videojs-ie8.min.js"></script>
+    <script src="http://vjs.zencdn.net/5.5.3/video.js"></script>
 </head>
 <body>
-$END$
+<video id="my-video" class="video-js" controls preload="auto" width="640" height="300"
+       poster="http://img1.178.com/news/201705/289777912560/289777981574.jpg" data-setup="{}">
+    <source src="rtmp://43.139.34.35:9909/live/test" type="flv">
+    </p>
+</video>
+
 </body>
 </html>

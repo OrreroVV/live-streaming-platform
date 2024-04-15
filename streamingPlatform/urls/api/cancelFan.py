@@ -9,15 +9,15 @@ from streamingPlatform.models.streamCode.streamCode import StreamCode
 from streamingPlatform.models.users.users import Users
 
 import re
-def cancelFollows(request):
+def cancelFan(request):
 
     user = request.user
-    follow = request.GET.get('follow')
+    fan = request.GET.get('fan')
 
-    fans = Fans.objects.filter(fan=user.username, follower=follow)
-
-    if fans is not None:
-        fans.delete()
+    follow = Fans.objects.filter(fan=fan, follower=user.username)
+    print("follow: ", follow)
+    if follow is not None:
+        follow.delete()
         return JsonResponse({
             'result': 'success',
         })

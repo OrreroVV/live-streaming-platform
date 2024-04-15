@@ -9,9 +9,7 @@ from streamingPlatform.models.streamCode.streamCode import StreamCode
 from streamingPlatform.models.users.users import Users
 
 import re
-
-
-def getFollow(request):
+def getFollows(request):
     user = request.user
     print("username: ", user.username)
 
@@ -20,7 +18,8 @@ def getFollow(request):
 
     for item in fans:
         print("follow: ", item.follower.uid)
-        res.append(item.follower.uid)
+        temp = {"uid": item.follower.uid, "img_url": item.follower.img_url, "name": item.follower.user_name}
+        res.append(temp)
     # 序列化 QuerySet 为 JSON 字符串
 
     return JsonResponse({

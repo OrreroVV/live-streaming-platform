@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+import os
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,12 +26,17 @@ SECRET_KEY = 'django-insecure--s4xc#aagp!2v84&rbsz@efdgpdd1jotm6$ga!_da&gm%ivjp3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["8.138.86.207", "127.0.0.1"]
 
 
 # Application definition
 
+
+WSGI_APPLICATION = 'liveStreamingPlatform.wsgi.application'
+
 INSTALLED_APPS = [
+    'channels',
+    "streamingPlatform",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,7 +73,26 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'liveStreamingPlatform.wsgi.application'
+
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Asia/Shanghai'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [  # 快速找到static路径
+    os.path.join(BASE_DIR, 'streamingPlatform', 'static'),
+]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 # Database
@@ -75,8 +100,12 @@ WSGI_APPLICATION = 'liveStreamingPlatform.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
+        'NAME': 'streamingPlatform',         # 你要存储数据的库名，事先要创建之
+        'USER': 'root',         # 数据库用户名
+        'PASSWORD': '20020217',     # 密码
+        'HOST': '8.138.86.207',    # 主机
+        'PORT': '3306',         # 数据库使用的端口
     }
 }
 
@@ -100,6 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -115,9 +145,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ASGI_APPLICATION = 'liveStreamingPlatform.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("8.138.86.207", 6379)],
+        },
+    },
+}
+
