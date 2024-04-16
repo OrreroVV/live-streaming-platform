@@ -142,11 +142,7 @@
                             id="follow"
                           >
                             <div>关注:</div>
-<<<<<<< HEAD
                             <div>1</div>
-=======
-                            <div>{{ followers }}</div>
->>>>>>> 78c1cd5e3c3be8b4b5182ed4d346869f9391f46f
                           </div>
                         </div>
                         <div>|</div>
@@ -156,11 +152,7 @@
                             id="fans"
                           >
                             <div>粉丝:</div>
-<<<<<<< HEAD
                             <div>1</div>
-=======
-                            <div>{{ fans }}</div>
->>>>>>> 78c1cd5e3c3be8b4b5182ed4d346869f9391f46f
                           </div>
                         </div>
                         <div>|</div>
@@ -268,19 +260,11 @@
             window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
         });
         document.getElementById('follow').addEventListener('click', function () {
-<<<<<<< HEAD
             alert('关注被点击')
         })
 
         document.getElementById('fans').addEventListener('click', function () {
             alert('粉丝被点击')
-=======
-          window.location.href = "{% url 'follow' %}";
-        })
-
-        document.getElementById('fans').addEventListener('click', function () {
-          window.location.href = "{% url 'fan' %}";
->>>>>>> 78c1cd5e3c3be8b4b5182ed4d346869f9391f46f
         })
 
         document.getElementById('live_').addEventListener('click', function () {

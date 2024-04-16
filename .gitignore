@@ -2,5 +2,3 @@
 *.rdb
 *.log
 *.xml
-db.sqlite3
-temp/*
