@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+
+
+const p = (seconds) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(seconds);
+      resolve(seconds);
+    }, seconds * 1000);
+  });
+
+const after = (result) => {
+  setTimeout(() => {
+    console.log(`${result} after`);
+  }, 300);
+}
+
+async function show(item) {
+  while (true){
+      const result = await p(2);
+        after(result);
+  }
+}
+
+show();
+
+
+
+</script>
+
+</body>
+</html>

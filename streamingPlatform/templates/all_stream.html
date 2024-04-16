@@ -1,0 +1,247 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .flex.justify-center {
+            justify-content: center;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        /* .slefProfile {
+              display: block;
+              margin-top: 30px;
+
+          } */
+
+
+        .scroll-box {
+            width: 100%; /* 容器宽度占据父元素全部宽度 */
+            height: 600px; /* 固定容器高度 */
+            overflow-y: auto; /* 垂直滚动条 */
+        }
+
+        /* 隐藏浏览器默认滚动条 */
+        .scroll-box::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        /* 轨道 */
+        .scroll-box::-webkit-scrollbar-track {
+            background-color: transparent; /* 设置轨道背景颜色为透明 */
+        }
+
+        /* 滑块 */
+        .scroll-box::-webkit-scrollbar-thumb {
+            background-color: transparent; /* 设置滑块颜色为透明 */
+            border-radius: 10px;
+        }
+
+        /* 滑块悬停时 */
+        .scroll-box::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.2); /* 设置滑块悬停时的颜色（可选）*/
+        }
+
+
+        .room {
+            display: inline-block;
+            width: calc(23% - 10px); /* 每列宽度为 23%，减去外边距宽度 */
+            margin-right: 10px; /* 设置列之间的间距 */
+        }
+
+        .room img {
+            width: 100%;
+            height: auto;
+        }
+
+        .room p {
+            width: 100%;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body class="bg-gradient-to-r from-blue-900 to-purple-900 text-white">
+<div class="main">
+    <div class="row" style="width: 100%; height: 100%">
+        <div class="col-2">
+            <!-- Sidebar -->
+            <div
+                    class="flex-none w-64 bg-black bg-opacity-50 p-6"
+                    style="height: 100vh; width: 50%"
+            >
+                <div class="mt-6">
+                    <div class="flex items-center space-x-3 mb-3" id="my">
+                        <i class="fas fa-user text-white text-lg"> </i>
+                        <span> 我的 </span>
+                    </div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <i class="fas fa-home text-white text-lg"> </i>
+                        <span> 首页 </span>
+                    </div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <i class="fas fa-user-friends text-white text-lg"> </i>
+                        <span> 关注 </span>
+                    </div>
+                    <div class="flex items-center space-x-3 mb-3">
+                        <i class="fas fa-envelope text-white text-lg"> </i>
+                        <span> 消息 </span>
+                    </div>
+
+                    <div class="flex items-center space-x-3 mb-3" id="live_">
+                        <i class="fas fa-video text-white text-lg"> </i>
+                        <span> 直播 </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-10">
+            <div>
+                <div class="row">
+                    <div
+                            style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+                    >
+                        <div class="flex space-x-4 items-center">
+                            <input
+                                    class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md"
+                                    placeholder="搜索你感兴趣的内容"
+                                    type="text"
+                                    style="
+                      width: 1000px;
+                      height: 50px;
+                      margin-top: 20px;
+                      margin-right: 200px;
+                    "
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div style="width: 200px; height: 30px"></div>
+                </div>
+
+                <div class="row" style="font-size: 2em">
+                    <div id="room_list" class="scroll-box"></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let my = $('#my');
+    my.click(function () {
+        window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
+    });
+
+    document.getElementById('live_').addEventListener('click', function () {
+        window.location.href = {% url 'all_stream' %};
+    })
+
+
+    function start() {
+
+        const roomList = $("#room_list");
+        let row = $("<div>").addClass("row");
+        console.log('start');
+        $.ajax({
+            url: '/api/all_stream_code',
+            type: 'GET',
+            data: {},
+            success: (resp) => {
+                let result = resp['result'];
+                let streams = resp['json_streams'];
+                let jsonData = JSON.parse(streams);
+                let x = [];
+                for (let i = 0; i < 30; i++) {
+                    x.push(jsonData);
+                }
+                x.forEach((item, index) => {
+                    let room_code = item[0][0];
+                    let uid = item[0][1];
+                    let name = item[0][2];
+                    console.log("room_code: ", room_code, uid, name, index)
+                    if (index > 0 && index % 4 === 0) {
+                        roomList.append(row);
+                        row = $("<div>").addClass("row");
+                    }
+
+                    // 这里可以对每个元素执行所需操作
+                    const roomDiv = $("<div>").addClass("room col-md-3");
+
+                    $.ajax({
+                        url: '/api/video_frame',
+                        type: 'GET',
+                        data: {
+                            stream_code: room_code,
+                        },
+                        success: (resp) => {
+                            let url = resp.video_frame_url;
+                            let res = "{% static 'video_frame' %}/" + url;
+                            const img = $("<img>").attr("src", res);
+                            const p = $("<p>").text(name);
+                            roomDiv.append(img, p);
+
+                            roomDiv.on("click", function () {
+                                // 在这里定义点击事件触发时执行的操作
+                                window.location.href = " {% url 'living' %}?uid=" + uid;
+                            });
+
+                            roomList.append(roomDiv);
+                        },
+                        error: () => {
+
+                        },
+                    })
+
+
+                });
+            },
+            error: () => {
+
+            },
+        })
+
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        start();
+
+
+    });
+
+</script>
+</body>
+</html>

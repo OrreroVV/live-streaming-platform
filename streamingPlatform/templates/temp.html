@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+.room {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    display: inline-block;
+}
+
+.room img {
+    width: 100%;
+    height: auto;
+}
+
+.room p {
+    width: 100%;
+    text-align: center;
+}
+</style>
+<body>
+
+<script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+
+<div id="room_list"></div>
+
+
+<script>
+
+    function start() {
+
+        const roomList = $("#room_list");
+
+        console.log('start');
+        $.ajax({
+            url: '/api/all_stream_code',
+            type: 'GET',
+            data: {},
+            success: (resp) => {
+                let result = resp['result'];
+                let streams = resp['streams'];
+                console.log('streams: ', streams);
+                streams.forEach(room_code => {
+
+                    // 这里可以对每个元素执行所需操作
+                    const roomDiv = $("<div>").addClass("room");
+
+                    $.ajax({
+                        url: '/api/video_frame',
+                        type: 'GET',
+                        data: {
+                            stream_code: room_code,
+                        },
+                        success: (resp) => {
+                            let url = resp.video_frame_url;
+                            let res = "{% static 'video_frame' %}/" + url;
+                            const img = $("<img>").attr("src", res);
+                            const p = $("<p>").text("xxx");
+                            roomDiv.append(img, p);
+                            roomList.append(roomDiv);
+                        },
+                        error: () => {
+
+                        },
+                    })
+
+
+                });
+            },
+            error: () => {
+
+            },
+        })
+
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        start();
+
+
+    });
+
+
+</script>
+</body>
+</html>

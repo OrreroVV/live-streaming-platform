@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #f12711, #f5af19);
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .login-form {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 300px;
+      }
+      .login-form h2 {
+        text-align: center;
+        color: #333;
+      }
+      input[type='text'],
+      input[type='password'] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+      }
+    </style>
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+  </head>
+  <body>
+    <div class="login-form">
+      <h2>注册</h2>
+        <input type="text" id="user_id" placeholder="uid" required /><br />
+      <input type="text" id="Username" placeholder="Username" required /><br />
+      <input
+        type="password"
+        id="Password"
+        placeholder="Password"
+        required
+      /><br />
+        <input
+        type="password"
+        id="rePassword"
+        placeholder="rePassword"
+        required
+      /><br />
+      <button type="submit" id="registerButton">注册</button>
+        <a href="{% url 'signin' %}">已有账号？去登录</a>
+        <p id="message"></p>
+    </div>
+
+    <script>
+      $button = $('#registerButton')
+      $button.click(function () {
+        let username = $('#Username').val();
+        let password = $('#Password').val();
+        let rePassword = $('#rePassword').val();
+        let user_id = $('#user_id').val();
+        $.ajax({
+          url: '/api/Register',
+          type: 'GET',
+          data: {
+              user_id: user_id,
+            username: username,
+            password: password,
+              rePassword: rePassword,
+          },
+          success: (resp) => {
+            let res = resp['result']
+            console.log(res)
+              if (res === "success"){
+                  window.location.href = "{% url 'user_info' %}?uid=" + user_id;
+              }
+              else{
+                  $('#message').text(res);
+              }
+          },
+          error: () => {},
+        })
+      })
+    </script>
+  </body>
+</html>

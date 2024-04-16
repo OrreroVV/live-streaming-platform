@@ -1,0 +1,505 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/flv.js/1.5.0/flv.min.js"></script>
+    <style>
+        .mainContainer {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-container {
+            position: relative;
+            width: calc(100% - 20px);
+            padding: 0;
+            padding-top: 55%;
+        }
+
+        .centeredVideo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
+
+        .urlInput {
+            display: block;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        .controls {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .flex.justify-center {
+            justify-content: center;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .app-cursor-pointer {
+            cursor: pointer;
+        }
+
+        .pd {
+            padding: 10px 20px;
+        }
+
+        .app-flex {
+            display: flex;
+        }
+
+        .app-flex-start {
+            justify-content: flex-start;
+        }
+
+        .app-flex-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-flex-1 {
+            flex: 1;
+        }
+
+        .left-menu {
+            height: 100vh;
+        }
+
+        .pd-lg {
+            padding: 30px;
+        }
+
+        .right-comment {
+            width: 20%;
+            height: 100vh;
+        }
+
+        .app-w100 {
+            width: 100%;
+        }
+
+        .app-w100-h100 {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pd-sm {
+            padding: 5px;
+        }
+
+        .app-border-radius {
+            border-radius: 10px;
+        }
+
+        .middle {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .comments {
+        }
+
+        .p-hor {
+            padding: 0 30px;
+        }
+
+        .overflow-hidden {
+            overflow: hidden;
+        }
+
+        /* .slefProfile {
+              display: block;
+              margin-top: 30px;
+
+          } */
+
+        /* 设置滚动条样式 */
+        .chatContainer {
+            width: 100%; /* 宽度占满父元素 */
+            height: 78vh; /* 长度占整体视口高度的四分之五 */
+            border-radius: 20px;
+
+            overflow-y: scroll; /* 添加滚动条 */
+            padding: 15px;
+            background-color: rgba(37, 38, 50, 1); /* 黑色半透明背景 */
+        }
+
+        /* 修改滚动条轨道和滑块颜色为紫色 - Chrome/Safari/Edge */
+        .chatContainer::-webkit-scrollbar {
+            width: 12px; /* 滚动条宽度 */
+        }
+
+        .chatContainer::-webkit-scrollbar-thumb {
+            background-color: rgba(54, 55, 65, 1); /* 滑块颜色 */
+            border-radius: 6px; /* 滑块圆角 */
+        }
+
+        .chatContainer::-webkit-scrollbar-track {
+            background: rgba(37, 38, 50, 1); /* 轨道背景颜色 */
+        }
+
+        /* CSS 样式 */
+        .message {
+            margin-bottom: 10px;
+        }
+
+        .username {
+            color: rgb(77, 123, 202); /* 设置用户名颜色 */
+            font-size: 18px; /* 将字体大小设置为 16像素（根据需要调整大小）*/
+        }
+
+        .profile-link {
+            color: green; /* 设置链接颜色 */
+            text-decoration: none; /* 移除下划线 */
+            cursor: pointer;
+        }
+
+        .message-content {
+            color: rgb(255, 255, 255); /* 设置消息内容颜色 */
+            font-size: 18px; /* 将字体大小设置为 16像素（根据需要调整大小）*/
+        }
+
+
+        .text_input {
+            width: 100%; /* 宽度占满父元素 */
+            height: 100%; /* 长度占整体视口高度的四分之五 */
+        }
+
+        .text_input_input {
+            height: 100%;
+            width: 80vh;
+            color: rgb(22, 24, 35);
+        }
+
+        .bg_main {
+            background: linear-gradient(to left, rgb(22, 24, 35), rgb(39, 22, 38)); /* 设置背景颜色从深灰色到浅灰色的渐变 */
+
+            background: rgb(22, 24, 35);
+        }
+
+
+
+    #loadingMessage {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 20px;
+        width: 100%;
+        height: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+        color: white;
+        background-color: rgba(11,11,11, 1);
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    </style>
+</head>
+
+<body class="bg_main">
+<div class="main app-flex">
+    <div class="left-menu bg-black bg-opacity-50">
+        <div
+                class="flex items-center space-x-3 mb-3 app-cursor-pointer pd"
+                id="my"
+        >
+            <i class="fas fa-user text-white text-lg"> </i>
+            <span> 我的 </span>
+        </div>
+        <div class="flex items-center space-x-3 mb-3 app-cursor-pointer pd">
+            <i class="fas fa-home text-white text-lg"> </i>
+            <span> 首页 </span>
+        </div>
+        <div class="flex items-center space-x-3 mb-3 app-cursor-pointer pd">
+            <i class="fas fa-user-friends text-white text-lg"> </i>
+            <span> 关注 </span>
+        </div>
+        <div class="flex items-center space-x-3 mb-3 app-cursor-pointer pd">
+            <i class="fas fa-envelope text-white text-lg"> </i>
+            <span> 消息 </span>
+        </div>
+
+        <div
+                class="flex items-center space-x-3 mb-3 app-cursor-pointer pd"
+                id="live_"
+        >
+            <i class="fas fa-video text-white text-lg"> </i>
+            <span> 直播 </span>
+        </div>
+    </div>
+
+    <div
+            class="app-flex-1 middle app-flex-center app-flex-column app-flex-start"
+    >
+        <div class="row">
+            <div
+                    style="display: flex; align-items: center; justify-content: center"
+            >
+                <div class="flex space-x-4 items-center">
+                    <input
+                            class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md"
+                            placeholder="搜索你感兴趣的内容"
+                            type="text"
+                            style="
+                  width: 1000px;
+                  height: 50px;
+                  margin-top: 20px;
+                  margin-right: 200px;
+                "
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div style="width: 200px; height: 20px"></div>
+        </div>
+
+        <div class="app-w100">
+            <div class="mainContainer app-flex-center app-w100-h100">
+                <div class="video-container">
+                    <video
+                            id="videoElement"
+                            class="centeredVideo app-w100"
+                            controls
+                            muted
+                            autoplay
+                    ></video>
+                    <div id="loadingMessage" class="loadingMessage">主播正在赶来的路上</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-comment pd-sm">
+        <div
+                class="comments app-border-radius app-w100-h100 app-flex-column overflow-hidden"
+        >
+            <div class="comment-header">
+                <div class="row" style="height: 70px"></div>
+
+                <div class="row" style="height: 20px">
+                    <div style="width: 200px; height: 20px"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="chatContainer" id="chatContainer"></div>
+            </div>
+
+
+            <div class="flex items-center justify-between p-2 text_input"> <!-- 调整宽度为 90% -->
+                <input class="text-gray-400 text-sm text_input" type="text" id="msg" placeholder="与大家互动一下..."
+                       required/>
+                <div class="flex items-center">
+                    <button id="button_send_msg" class="text-gray-400 focus:outline-none" style="width: 30px">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let my = $('#my');
+    my.click(function () {
+        window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
+    });
+    //   document.getElementById('follow').addEventListener('click', function () {
+    //       alert('关注被点击')
+    //   })
+
+    //   document.getElementById('fans').addEventListener('click', function () {
+    //       alert('粉丝被点击')
+    //   })
+
+    document.getElementById('live_').addEventListener('click', function () {
+        window.location.href = {% url 'all_stream' %};
+
+    })
+
+
+    function insert(uid, user, msg) {
+        /*
+        * uid 用户id
+        * user 用户昵称
+        * msg 发送消息
+        * */
+        // 创建一个新的 <div> 元素作为新的聊天消息"""?uid=' + uid ' +  '
+        let res = "{% url 'user_info' %}?uid=" + uid;
+        console.log(res);
+        let newMessage = $('<div />').html('<a href="' + res + '" class="username">' + user + '：</a><span class="message-content">' + msg + '</span>');
+
+        // 将新消息添加到 chatContainer 中
+        $('#chatContainer').append(newMessage);
+
+        // 每次添加新消息后滚动到底部
+        $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
+    }
+
+
+    //video类
+    class VideoPlayer {
+    constructor() {
+        this.player = null;
+        // 创建播放器
+        this.videoElement = document.getElementById('videoElement');
+        this.create();
+        this.loadingMessage = document.getElementById('loadingMessage');
+
+        this.videoElement.addEventListener('canplay', () => {
+            $("#loadingMessage").hide();
+        });
+
+    }
+
+    create(){
+        console.log("start create video");
+         this.player = flvjs.createPlayer({
+            isLive: 'true',
+            type: 'flv',
+            url: 'http://8.138.86.207/flv?port=9909&app=live&stream={{ live_code }}',
+        });
+        this.player.attachMediaElement(this.videoElement);
+        this.player.load();
+        this.player.play();
+        this.check();
+    }
+
+    check(){
+        this.player.on(flvjs.Events.ERROR, (errorType, errorDetail, errorInfo) => {
+            console.log("类型:" + errorType, "报错内容" + errorDetail, "报错信息" + errorInfo);
+            // 视频报错，销毁之后重新创建
+            if (this.player) {
+                this.player.pause();
+                this.player.unload();
+                this.player.detachMediaElement();
+                this.player.destroy();
+                this.player = null;
+                $("#loadingMessage").show(); // 重新添加之前使用的 CSS 类
+                this.create();
+            }
+        });
+    }
+}
+
+
+
+
+    function start() {
+        if (flvjs.isSupported()) {
+            let player = new VideoPlayer();
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        start();
+    });
+
+    const socket = new WebSocket("ws://localhost:8000/ws/chat/{{ live_code }}/");
+
+    function send_message(uid, username, ctx) {
+        const messageData = {
+            event: "message",
+            uid: uid,
+            name: username,
+            ctx: ctx,
+        };
+        const res = JSON.stringify(messageData);
+        socket.send(res);
+    }
+
+    // 监听连接打开事件
+    socket.onopen = function (event) {
+        console.log("WebSocket连接已打开");
+    };
+
+    // 监听收到消息事件
+    socket.onmessage = function (event) {
+        const receivedData = JSON.parse(event.data);
+        let uid = receivedData.uid;
+        let name = receivedData.name;
+        let ctx = receivedData.ctx;
+
+        console.log('发送消息：', uid, name, ctx);
+        insert(uid, name, ctx);
+    };
+
+    // 监听连接关闭事件
+    socket.onclose = function (event) {
+        console.log("WebSocket连接已关闭");
+    };
+
+    // 监听发生错误事件
+    socket.onerror = function (error) {
+        console.error("WebSocket错误：" + error.message);
+    };
+
+
+    let button_input = $("#button_send_msg");
+    button_input.click(() => {
+        let input_text = $("#msg").val();
+        let login_uid = "{{ login_uid }}";
+        let login_name = "{{ login_user_name }}";
+        console.log(login_uid, login_name, input_text);
+        if (login_name === "unknown"){
+            window.location.href = "{% url 'signin' %}";
+        }
+        send_message(login_uid, login_name, input_text);
+        $("#msg").val("");
+    });
+
+
+</script>
+</body>
+</html>
