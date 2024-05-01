@@ -369,25 +369,14 @@
 
 
     function insert(uid, user, msg) {
-        /*
-        * uid 用户id
-        * user 用户昵称
-        * msg 发送消息
-        * */
-        // 创建一个新的 <div> 元素作为新的聊天消息"""?uid=' + uid ' +  '
         let res = "{% url 'user_info' %}?uid=" + uid;
         console.log(res);
         let newMessage = $('<div />').html('<a href="' + res + '" class="username">' + user + '：</a><span class="message-content">' + msg + '</span>');
-
-        // 将新消息添加到 chatContainer 中
         $('#chatContainer').append(newMessage);
-
-        // 每次添加新消息后滚动到底部
         $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
     }
 
 
-    //video类
     class VideoPlayer {
     constructor() {
         this.player = null;
@@ -399,11 +388,9 @@
         this.videoElement.addEventListener('canplay', () => {
             $("#loadingMessage").hide();
         });
-
     }
 
     create(){
-        console.log("start create video");
          this.player = flvjs.createPlayer({
             isLive: 'true',
             type: 'flv',
@@ -432,15 +419,11 @@
     }
 }
 
-
-
-
     function start() {
         if (flvjs.isSupported()) {
             let player = new VideoPlayer();
         }
     }
-
 
     document.addEventListener('DOMContentLoaded', function () {
         start();

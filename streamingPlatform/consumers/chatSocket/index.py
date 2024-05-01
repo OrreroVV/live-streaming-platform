@@ -37,6 +37,8 @@ class ChatSocket(AsyncWebsocketConsumer):
                 'ctx': data['ctx']
             },
         )
+    async def chat_message(self, data):
+        print(data)
 
     async def group_send_event(self, data):  # 组内每一个人接收到group_send(type = group_create_player)都会执行该操作
         await self.send(text_data=json.dumps(data))
@@ -48,3 +50,5 @@ class ChatSocket(AsyncWebsocketConsumer):
         print(event, data)
         if event == 'message':
             await self.send_message(data)
+        elif event == 'chat':
+            await self.chat_message(data)

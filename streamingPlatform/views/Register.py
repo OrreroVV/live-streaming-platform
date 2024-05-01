@@ -8,21 +8,16 @@ from streamingPlatform.models.users.users import Users
 
 def Register(request):
     data = request.GET
-    print(data)
     username = data['username']
     password = data['password']
     rePassword = data['rePassword']
     user_id = data['user_id']
-
-    print(username, password, rePassword, user_id)
-
     if password != rePassword:
         return JsonResponse({
             'result': '密码不一致',
         })
 
     if User.objects.filter(username=user_id).exists():
-        print('用户名存在')
         return JsonResponse({
             'result': '用户名已存在',
         })

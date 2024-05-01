@@ -272,7 +272,6 @@
     })
 
 
-    // 获取要插入好友信息的容器
     const $friendList = $('#follow_list');
 
 
@@ -283,8 +282,6 @@
         success: (resp) => {
             let lists = resp['res']
             lists.forEach(function (follow) {
-                console.log(follow)
-                console.log(follow['uid']);
                 const $friendBox = $('<div>').addClass('friend-box');
                 $friendBox.html(`
                 <div style="width:100%;">
