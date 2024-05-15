@@ -204,29 +204,6 @@
 
     })
 
-    $("#button_get_code").click(() => {
-
-        $.ajax({
-            url: '/api/liveCode',
-            type: 'GET',
-            data: {},
-            success: (resp) => {
-                let res = resp['result']
-                let code = resp['code']
-                if (res === "success") {
-                    $("#code_value").text(code);
-                    $("#button_startLive").click(() => {
-                        let url = "{% url 'living' %}?uid={{ uid }}";
-                        window.location.href = url;
-                    });
-                } else {
-
-                }
-            },
-            error: () => {
-            },
-        })
-    });
 </script>
 </body>
 </html>
