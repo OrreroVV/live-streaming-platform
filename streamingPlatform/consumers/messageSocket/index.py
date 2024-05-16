@@ -6,7 +6,7 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.cache import cache
 
-class ChatSocket(AsyncWebsocketConsumer):
+class MessageSocket(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         user = self.scope['user']
@@ -26,10 +26,10 @@ class ChatSocket(AsyncWebsocketConsumer):
             data = json.loads(data)
             print('data: ', data)
             await self.send(text_data=json.dumps({
-                'event': data['event'],
                 'uid': data['uid'],
                 'name': data['name'],
                 'ctx': data['ctx'],
+                'time': data['time']
             }))
 
 
@@ -46,25 +46,21 @@ class ChatSocket(AsyncWebsocketConsumer):
             self.room_name,
             {
                 'type': 'group_send_event',
-                'event': data['event'],
                 'uid': data['uid'],
                 'name': data['name'],
-                'ctx': data['ctx']
+                'ctx': data['ctx'],
+                'time': data['time']
             },
         )
+
     async def group_send_event(self, data):  # 组内每一个人接收到group_send(type = group_create_player)都会执行该操作
         await self.send(text_data=json.dumps(data))
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-
         # 存储消息到缓存
         cached_messages = cache.get(self.room_name) or []
         cached_messages.append(text_data)
         cache.set(self.room_name, cached_messages)
-
         data = json.loads(text_data)
-        event = data['event']
-        print(event, data)
-        if event == 'message':
-            await self.send_message(data)
+        await self.send_message(data)

@@ -329,6 +329,72 @@
                          style="width: 1000px; height: 50px; margin-top: 20px; text-align: center; font-size: 24px;">
 
 
+
+
+                                                <!-- Button trigger modal -->
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                style="
+                    padding: 8px 16px;
+                    background-color: #007bff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                  "
+                        >
+                            下播
+                        </button>
+
+                        <!-- Modal -->
+                        <div
+                                class="modal fade"
+                                id="exampleModal"
+                                tabindex="-1"
+                                aria-labelledby="exampleModalLabel"
+                                style="color: black"
+                                aria-hidden="true"
+                        >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                            下播
+                                        </h1>
+                                        <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+
+
+
+                                        <p id="code_value"></p>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button
+                                                type="button"
+                                                class="btn"
+                                                data-bs-dismiss="modal"
+                                        >
+                                            关闭
+                                        </button>
+                                        <button type="button" class="btn" id="button_off">确认下播</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
 
 
@@ -391,6 +457,26 @@
         $('#chatContainer').append(newMessage);
         $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
     }
+
+
+
+    $("#button_off").click(() => {
+        let selectedValue = $("#duration").val();
+        $.ajax({
+            url: '/api/off_living',
+            type: 'GET',
+            data: {
+            },
+            success: (resp) => {
+                window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
+            },
+            error: () => {
+
+            },
+        });
+    });
+
+
 
 
     class VideoPlayer {

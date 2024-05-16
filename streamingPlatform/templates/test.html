@@ -1,41 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-<script>
-
-
-
-const p = (seconds) =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(seconds);
-      resolve(seconds);
-    }, seconds * 1000);
-  });
-
-const after = (result) => {
-  setTimeout(() => {
-    console.log(`${result} after`);
-  }, 300);
-}
-
-async function show(item) {
-  while (true){
-      const result = await p(2);
-        after(result);
-  }
-}
-
-show();
-
-
-
-</script>
-
-</body>
-</html>
+<div class="row" style="width: 100%; height: 100%">
+    <div class="col-2">
+        <!-- Sidebar -->
+        <div class="flex-none w-64 bg-black bg-opacity-50 p-6" style="height: 100vh; width: 50%">
+            <!-- 内容 -->
+            2
+        </div>
+    </div>
+    <div class="col-1">
+        <!-- 新列 -->
+        <div class="flex-none w-64 bg-gray-200 p-6" style="height: 100vh;"> <!-- 举例：背景颜色为灰色，高度为100% -->
+            <!-- 新列内容 -->
+            1
+        </div>
+    </div>
+</div>

@@ -1,0 +1,387 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.acwing.com/static/jquery/js/jquery-3.3.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .flex.justify-center {
+            justify-content: center;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        /* .slefProfile {
+              display: block;
+              margin-top: 30px;
+
+          } */
+
+
+        .scroll-box {
+            width: 90%;
+            height: 50vh;
+            overflow-y: auto;
+            border: 1px solid #ccc; /* 为了可见效果添加边框 */
+            box-sizing: border-box;
+        }
+
+        /* 隐藏浏览器默认滚动条 */
+        .scroll-box::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        /* 轨道 */
+        .scroll-box::-webkit-scrollbar-track {
+            background-color: transparent; /* 设置轨道背景颜色为透明 */
+        }
+
+        /* 滑块 */
+        .scroll-box::-webkit-scrollbar-thumb {
+            background-color: transparent; /* 设置滑块颜色为透明 */
+            border-radius: 10px;
+        }
+
+        /* 滑块悬停时 */
+        .scroll-box::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.2); /* 设置滑块悬停时的颜色（可选）*/
+        }
+
+        .friend-box {
+            height: 60px;
+            width: 98%;
+            padding: 10px;
+            margin: 5px;
+            display: flex; /* 设置为 Flex 布局 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .friend-box img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .friend-box h3 {
+            margin: 0;
+        }
+
+        .friend-box button {
+            float: right;
+            background-color: rgba(53, 45, 136, 70); /* 设置按钮背景颜色为蓝色 */
+            color: white; /* 设置文字颜色为白色 */
+            border: none; /* 移除默认边框 */
+            padding: 5px 10px; /* 添加内边距 */
+            margin-top: 10px; /* 设置上外边距 */
+            border-radius: 20px; /* 设置圆角边框半径，根据需要调整大小 */
+        }
+
+        .small-text {
+            font-size: 30px; /* 设置合适的字体大小 */
+        }
+
+
+        /* 设置滚动条样式 */
+        .chatContainer {
+            margin-top: 10px;
+            width: 100%; /* 宽度占满父元素 */
+            height: 90vh; /* 长度占整体视口高度的四分之五 */
+            border-radius: 20px;
+
+            overflow-y: scroll; /* 添加滚动条 */
+            padding: 15px;
+            background-color: rgba(37, 38, 50, 1); /* 黑色半透明背景 */
+        }
+
+        /* 修改滚动条轨道和滑块颜色为紫色 - Chrome/Safari/Edge */
+        .chatContainer::-webkit-scrollbar {
+            width: 12px; /* 滚动条宽度 */
+        }
+
+        .chatContainer::-webkit-scrollbar-thumb {
+            background-color: rgba(54, 55, 65, 1); /* 滑块颜色 */
+            border-radius: 6px; /* 滑块圆角 */
+        }
+
+        .chatContainer::-webkit-scrollbar-track {
+            background: rgba(37, 38, 50, 1); /* 轨道背景颜色 */
+        }
+
+        .text_input {
+            width: 100%; /* 宽度占满父元素 */
+            height: 100%; /* 长度占整体视口高度的四分之五 */
+        }
+
+        /* 自定义样式 */
+        .custom-input {
+            border-radius: 5px; /* 设置圆角 */
+            border: 1px solid rgb(37, 38, 50); /* 设置边框颜色 */
+            background-color: rgb(37, 38, 50); /* 设置背景颜色 */
+            color: white; /* 设置文字颜色 */
+            padding: 8px; /* 设置内边距 */
+        }
+
+        .space-between {
+            margin-left: 10px; /* 设置左边距 */
+        }
+
+
+        /* 设置滚动条样式 */
+        .friendsContainer {
+            margin-top: 10px;
+            width: 100%; /* 宽度占满父元素 */
+            height: 90vh; /* 长度占整体视口高度的四分之五 */
+            border-radius: 20px; /* 添加圆角边框 */
+
+            overflow-y: auto; /* 取消滚动条的可见性，根据内容自动显示滚动条 */
+            padding: 15px;
+            background-color: rgba(37, 38, 50, 1); /* 黑色半透明背景 */
+        }
+
+
+        .friendContainer-Box {
+            height: 60px;
+            width: 100%;
+        }
+
+
+        .friendContainer-Box h3 {
+            margin: 0;
+        }
+
+        .centered-text {
+            text-align: center; /* 文本居中 */
+            font-size: 20px; /* 放大字体 */
+            margin-top: 20px; /* 上边距 */
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-r from-blue-900 to-purple-900 text-white">
+<div class="main">
+    <div class="row" style="width: 100%; height: 100%">
+        <div class="col" style="flex-grow: 0.0945;">
+            <div
+                    class="flex-none w-64 bg-black bg-opacity-50 p-6"
+                    style="height: 100vh; width: 100%">
+                <div class="mt-6">
+                    <div class="flex items-center space-x-3 mb-3" id="my">
+                        <i class="fas fa-user text-white text-lg"> </i>
+                        <span> 我的 </span>
+                    </div>
+                    <div class="flex items-center space-x-3 mb-3" id="followers">
+                        <i class="fas fa-user-friends text-white text-lg"> </i>
+                        <span> 关注 </span>
+                    </div>
+                    <div class="flex items-center space-x-3 mb-3" id="fans">
+                        <i class="fas fa-user-friends text-white text-lg"> </i>
+                        <span> 粉丝 </span>
+                    </div>
+                    <div id="message" class="flex items-center space-x-3 mb-3">
+                        <i class="fas fa-envelope text-white text-lg"> </i>
+                        <span> 消息 </span>
+                    </div>
+
+                    <div class="flex items-center space-x-3 mb-3" id="live_">
+                        <i class="fas fa-video text-white text-lg"> </i>
+                        <span> 直播 </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col" style="flex-grow: 0.1;">
+    <div class="centered-text">
+        好友列表
+    </div>
+            <div>
+                <div class="friendsContainer" id="friendContainer"></div>
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <div class="chatContainer" id="chatContainer"></div>
+            </div>
+
+            <div class="flex items-center justify-between p-2 text_input" style="height: 50px;">> <!-- 调整宽度为 90% -->
+                <input class=" text_input custom-input" type="text" id="msg" placeholder="发送消息..."
+                       required/>
+                <div class="flex items-center space-between">
+                    <button id="button_send_msg" class="text-gray-400 focus:outline-none custom-input"
+                            style="width: 30px;background-color: rgb(37, 38, 50);">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+</div>
+
+<script>
+    let my = $('#my');
+    my.click(function () {
+        window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
+    });
+
+    document.getElementById('followers').addEventListener('click', function () {
+        window.location.href = "{% url 'follow' %}";
+    })
+
+    document.getElementById('fans').addEventListener('click', function () {
+        window.location.href = "{% url 'fan' %}";
+    })
+
+    document.getElementById('live_').addEventListener('click', function () {
+        window.location.href = {% url 'all_stream' %};
+
+    })
+    document.getElementById('message').addEventListener('click', function () {
+        window.location.href = {% url 'message' %};
+
+    })
+
+
+    function insert(uid, user, msg) {
+        let newMessage;
+        if (uid === "{{ login_uid }}"){
+            newMessage = $('<div />').html('<span style="color: #ADD8E6;">' + user + ':</span> <span class="message-content">' + msg + '</span>');
+        }
+        else {
+            newMessage = $('<div />').html(user + ': <span class="message-content">' + msg + '</span>');
+        }
+        $('#chatContainer').append(newMessage);
+        $('#chatContainer').scrollTop($('#chatContainer')[0].scrollHeight);
+    }
+
+    function send_message(uid, username, ctx) {
+        const messageData = {
+            uid: uid,
+            name: username,
+            ctx: ctx,
+            time: new Date(),
+        };
+        const res = JSON.stringify(messageData);
+        socket.send(res);
+    }
+
+
+    let button_input = $("#button_send_msg");
+    button_input.click(() => {
+        let input_text = $("#msg").val();
+        let login_uid = "{{ login_uid }}";
+        let login_name = "{{ login_user_name }}";
+        console.log(login_uid, login_name, input_text);
+        if (login_name === "unknown") {
+            window.location.href = "{% url 'signin' %}";
+        }
+        send_message(login_uid, login_name, input_text);
+        $("#msg").val("");
+    });
+
+
+    const $friendList = $('#friendContainer');
+
+    let socket;
+
+    $.ajax({
+        url: '/api/getContact',
+        type: 'GET',
+        data: {
+            uid: "{{ login_uid }}"
+        },
+        success: (resp) => {
+            let lists = JSON.parse(resp['res']);
+            for (let i = 0; i < lists.length; i++) {
+                let item = lists[i];
+
+                console.log(item)
+                const $friendBox = $('<div>').addClass('friendContainer-Box');
+                $friendBox.html(`
+    <div style="border: 1px solid #ccc; padding: 10px; width: 100px; background-color: rgba(51,52,63, 90%); border-radius: 10px;">
+        <h3 style="display: inline-block; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item['name']}</h3>
+    </div>
+`);
+
+
+                $friendBox.on("click", function (event) {
+                    // 在这里定义点击事件触发时执行的操作
+                    if (socket && socket.readyState !== WebSocket.CLOSED) {
+                        socket.close();
+                        $('#chatContainer').empty();
+                    }
+                    let url, temp = "{{ login_uid }}";
+                    if (temp > item) {
+                        url = item['uid'] + "ABCDXYZWOPQRSTUV" + temp;
+                    } else {
+                        url = temp + ".ABCDXYZWOPQRSTUV." + item['uid'];
+                    }
+                    url = "ws://localhost:9000/ws/message/" + url + "/";
+                    console.log(url)
+                    socket = new WebSocket(url);
+
+
+                    // 监听连接打开事件
+                    socket.onopen = function (event) {
+                        console.log("WebSocket连接已打开");
+                    };
+
+                    // 监听收到消息事件
+                    socket.onmessage = function (event) {
+                        const receivedData = JSON.parse(event.data);
+                        let uid = receivedData.uid;
+                        let name = receivedData.name;
+                        let ctx = receivedData.ctx;
+
+                        console.log('发送消息：', uid, name, ctx);
+                        insert(uid, name, ctx);
+                    };
+
+                    // 监听连接关闭事件
+                    socket.onclose = function (event) {
+                        console.log("WebSocket连接已关闭");
+                    };
+
+                    // 监听发生错误事件
+                    socket.onerror = function (error) {
+                        console.error("WebSocket错误：" + error.message);
+                    };
+                });
+                $friendList.append($friendBox);
+            }
+
+
+        },
+        error: () => {
+
+        },
+    })
+
+
+</script>
+</body>
+</html>

@@ -34,6 +34,79 @@
               margin-top: 30px;
 
           } */
+
+
+
+
+
+
+
+                .scroll-box {
+            width: 90%;
+            height: 50vh;
+            overflow-y: auto;
+            border: 1px solid #ccc; /* 为了可见效果添加边框 */
+            box-sizing: border-box;
+        }
+
+        /* 隐藏浏览器默认滚动条 */
+        .scroll-box::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        /* 轨道 */
+        .scroll-box::-webkit-scrollbar-track {
+            background-color: transparent; /* 设置轨道背景颜色为透明 */
+        }
+
+        /* 滑块 */
+        .scroll-box::-webkit-scrollbar-thumb {
+            background-color: transparent; /* 设置滑块颜色为透明 */
+            border-radius: 10px;
+        }
+
+        /* 滑块悬停时 */
+        .scroll-box::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(0, 0, 0, 0.2); /* 设置滑块悬停时的颜色（可选）*/
+        }
+
+        .friend-box {
+            height: 60px;
+            width: 98%;
+            padding: 10px;
+            margin: 5px;
+            display: flex; /* 设置为 Flex 布局 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .friend-box img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .friend-box h3 {
+            margin: 0;
+        }
+
+        .friend-box button {
+            float: right;
+            background-color: rgba(53, 45, 136, 70); /* 设置按钮背景颜色为蓝色 */
+            color: white; /* 设置文字颜色为白色 */
+            border: none; /* 移除默认边框 */
+            padding: 5px 10px; /* 添加内边距 */
+            margin-top: 10px; /* 设置上外边距 */
+            border-radius: 20px; /* 设置圆角边框半径，根据需要调整大小 */
+        }
+
+        .small-text {
+            font-size: 27px; /* 设置合适的字体大小 */
+        }
+
+
+
+
     </style>
 </head>
 
@@ -59,7 +132,7 @@
                         <i class="fas fa-user-friends text-white text-lg"> </i>
                         <span> 粉丝 </span>
                     </div>
-                    <div class="flex items-center space-x-3 mb-3">
+                    <div id="message" class="flex items-center space-x-3 mb-3">
                         <i class="fas fa-envelope text-white text-lg"> </i>
                         <span> 消息 </span>
                     </div>
@@ -95,17 +168,7 @@
                 "
                     >
                         <div class="flex space-x-4 items-center">
-                            <input
-                                    class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md"
-                                    placeholder="搜索你感兴趣的内容"
-                                    type="text"
-                                    style="
-                      width: 1000px;
-                      height: 50px;
-                      margin-top: 20px;
-                      margin-right: 200px;
-                    "
-                            />
+                            <span style="font-size: 24px; margin-top: 20px;">欢迎来到流媒体直播平台</span>
                         </div>
                     </div>
                 </div>
@@ -170,7 +233,21 @@
                 </div>
 
                 <div class="row">
-                    <div style="width: 200px; height: 50px"></div>
+                    <div style="width: 200px; height: 30px"></div>
+                </div>
+
+
+
+
+                <div class="row" style="display: flex; justify-content: center; color: #ffffff;  font-size: 30px;">
+                    直播记录
+                </div>
+                <div class="row">
+                    <div class="mt-6">
+                        <div class="row" style="font-size: 2em">
+                            <div id="live_counts_list" class="scroll-box"></div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -203,30 +280,65 @@
         window.location.href = {% url 'all_stream' %};
 
     })
+    document.getElementById('message').addEventListener('click', function () {
+        window.location.href = {% url 'message' %};
 
-    $("#button_get_code").click(() => {
+    })
 
+
+
+
+        $("#button_ban").click(() => {
+        let selectedValue = $("#duration").val();
         $.ajax({
-            url: '/api/liveCode',
+            url: '/api/get_user_ban',
             type: 'GET',
-            data: {},
+            data: {
+                uid: "{{ uid }}",
+                time: selectedValue,
+            },
             success: (resp) => {
-                let res = resp['result']
-                let code = resp['code']
-                if (res === "success") {
-                    $("#code_value").text(code);
-                    $("#button_startLive").click(() => {
-                        let url = "{% url 'living' %}?uid={{ uid }}";
-                        window.location.href = url;
-                    });
-                } else {
-
-                }
+                window.location.href = "{% url 'user_info' %}?uid={{ uid }}";
             },
             error: () => {
+
             },
-        })
+        });
     });
+
+
+
+
+    const $friendList = $('#live_counts_list');
+    $.ajax({
+        url: '/api/get_live_counts',
+        type: 'GET',
+        data: {
+            uid: "{{ uid }}"
+        },
+        success: (resp) => {
+            let lists = JSON.parse(resp['res'])
+            console.log(lists)
+            for (let i = 0; i < lists.length; i++) {
+                let item = lists[i];
+                console.log(item);
+                const $friendBox = $('<div>').addClass('friend-box');
+                $friendBox.html(`
+                <div style="width:100%;">
+    <h3 style="display: inline-block; margin: 0;" class="small-text">开始时间：${item.start}</h3>
+<h3 style="display: inline-block; margin: 0;" class="small-text">    结束时间：${item.end}</h3>
+<h3 style="display: inline-block; margin: 0;" class="small-text">    直播时长：${item.time} h</h3>
+</div>
+        `);
+
+                $friendList.append($friendBox);
+            }
+        },
+        error: () => {
+
+        },
+    });
+
 </script>
 </body>
 </html>

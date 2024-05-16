@@ -98,15 +98,15 @@
                         <i class="fas fa-user text-white text-lg"> </i>
                         <span> 我的 </span>
                     </div>
-                    <div class="flex items-center space-x-3 mb-3">
-                        <i class="fas fa-home text-white text-lg"> </i>
-                        <span> 首页 </span>
-                    </div>
-                    <div class="flex items-center space-x-3 mb-3">
+                    <div class="flex items-center space-x-3 mb-3" id="followers">
                         <i class="fas fa-user-friends text-white text-lg"> </i>
                         <span> 关注 </span>
                     </div>
-                    <div class="flex items-center space-x-3 mb-3">
+                    <div class="flex items-center space-x-3 mb-3" id="fans">
+                        <i class="fas fa-user-friends text-white text-lg"> </i>
+                        <span> 粉丝 </span>
+                    </div>
+                    <div id="message" class="flex items-center space-x-3 mb-3">
                         <i class="fas fa-envelope text-white text-lg"> </i>
                         <span> 消息 </span>
                     </div>
@@ -115,35 +115,23 @@
                         <i class="fas fa-video text-white text-lg"> </i>
                         <span> 直播 </span>
                     </div>
+                    </div>
+                </div>
+            </div>
+
+
+                <div class="col-10">
+            <div>
+        <div class="row">
+            <div style="display: flex; align-items: center; justify-content: center">
+                <div class="flex space-x-4 items-center">
+                    <div class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md"
+                         style="width: 1000px; height: 50px; margin-top: 20px; text-align: center; font-size: 24px;">
+                        <span>直播大厅</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-10">
-            <div>
-                <div class="row">
-                    <div
-                            style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                "
-                    >
-                        <div class="flex space-x-4 items-center">
-                            <input
-                                    class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md"
-                                    placeholder="搜索你感兴趣的内容"
-                                    type="text"
-                                    style="
-                      width: 1000px;
-                      height: 50px;
-                      margin-top: 20px;
-                      margin-right: 200px;
-                    "
-                            />
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div style="width: 200px; height: 30px"></div>
@@ -156,6 +144,11 @@
 
             </div>
         </div>
+
+
+        </div>
+
+
     </div>
 </div>
 
@@ -165,8 +158,20 @@
         window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
     });
 
+    document.getElementById('followers').addEventListener('click', function () {
+        window.location.href = "{% url 'follow' %}";
+    })
+
+    document.getElementById('fans').addEventListener('click', function () {
+        window.location.href = "{% url 'fan' %}";
+    })
+
     document.getElementById('live_').addEventListener('click', function () {
         window.location.href = {% url 'all_stream' %};
+    })
+    document.getElementById('message').addEventListener('click', function () {
+        window.location.href = {% url 'message' %};
+
     })
 
 

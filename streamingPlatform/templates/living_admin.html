@@ -238,6 +238,7 @@
             border-radius: 5px;
         }
 
+
         .pd span {
             color: white;
         }
@@ -247,7 +248,6 @@
 <body class="bg_main">
 <div class="main app-flex">
     <div class="left-menu bg-black bg-opacity-50">
-
 
         <div
                 class="flex items-center space-x-3 mb-3 app-cursor-pointer pd">
@@ -280,8 +280,6 @@
             <i class="fas fa-video text-white text-lg"> </i>
             <span> 直播 </span>
         </div>
-
-
     </div>
 
     <div
@@ -327,6 +325,75 @@
 
                     <div class="bg-transparent border-b border-gray-500 text-white px-2 py-1 w-full max-w-md"
                          style="width: 1000px; height: 50px; margin-top: 20px; text-align: center; font-size: 24px;">
+
+
+                        <!-- Button trigger modal -->
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                style="
+                    padding: 8px 16px;
+                    background-color: #007bff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                  "
+                        >
+                            封禁用户
+                        </button>
+
+                        <!-- Modal -->
+                        <div
+                                class="modal fade"
+                                id="exampleModal"
+                                tabindex="-1"
+                                aria-labelledby="exampleModalLabel"
+                                style="color: black"
+                                aria-hidden="true"
+                        >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                            封禁时间
+                                        </h1>
+                                        <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                        ></button>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                        <select id="duration" class="bg-gray-700 text-white px-2 py-1 rounded">
+                                            <option value="30">30分钟</option>
+                                            <option value="60">1小时</option>
+                                            <option value="120">2小时</option>
+                                            <option value="1440">24小时</option>
+                                            <option value="59940">999小时</option>
+                                        </select>
+
+
+                                        <p id="code_value"></p>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button
+                                                type="button"
+                                                class="btn"
+                                                data-bs-dismiss="modal"
+                                        >
+                                            关闭
+                                        </button>
+                                        <button type="button" class="btn" id="button_ban">封禁</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                     </div>
@@ -384,6 +451,27 @@
     })
 
 
+    $("#button_ban").click(() => {
+        let selectedValue = $("#duration").val();
+        $.ajax({
+            url: '/api/set_room_ban',
+            type: 'GET',
+            data: {
+                uid: "{{ uid }}",
+                time: selectedValue,
+            },
+            success: (resp) => {
+
+                let url = "{% url 'living' %}?uid={{ login_uid }}";
+                window.location.href = url;
+            },
+            error: () => {
+
+            },
+        });
+    });
+
+
     function insert(uid, user, msg) {
         let res = "{% url 'user_info' %}?uid=" + uid;
         console.log(res);
@@ -428,7 +516,7 @@
                 },
                 success: (resp) => {
                     let state = resp['res']
-                    console.log(state)
+                    console.log(this.player)
                     if (state === "0") {
                         if (this.player) {
                             this.player.pause();
@@ -482,6 +570,7 @@
     }
 
     function start() {
+
 
         if (flvjs.isSupported()) {
             let player = new VideoPlayer();
@@ -537,33 +626,12 @@
         let input_text = $("#msg").val();
         let login_uid = "{{ login_uid }}";
         let login_name = "{{ login_user_name }}";
+        console.log(login_uid, login_name, input_text);
         if (login_name === "unknown") {
             window.location.href = "{% url 'signin' %}";
         }
-
-
-        $.ajax({
-                url: '/api/check_user_ban',
-                type: 'GET',
-                data: {
-                    uid: "{{ login_uid }}"
-                },
-                success: (resp) => {
-                    let state = resp['res']
-                    console.log("state: ", state)
-                    if (state === "1") {
-                        send_message(login_uid, login_name, input_text);
-                        $("#msg").val("");
-                    } else {
-                        $("#msg").val("您已被禁言");
-                    }
-                },
-                error: () => {
-
-                },
-            });
-
-
+        send_message(login_uid, login_name, input_text);
+        $("#msg").val("");
     });
 
 
