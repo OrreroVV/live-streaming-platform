@@ -31,11 +31,12 @@ def get_live_counts(request):
     print(counts.count())
     res = []
     for item in counts:
-        temp = {'start': item.start_time.strftime("%Y-%m-%d %H:%M:%S"),
-                'end': item.end_time.strftime("%Y-%m-%d %H:%M:%S"),
-                'time': round((item.end_time - item.start_time).total_seconds() / 3600, 2)}
-        print(temp)
-        res.append(temp)
+        if item.end_time is not None:
+            temp = {'start': item.start_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    'end': item.end_time.strftime("%Y-%m-%d %H:%M:%S"),
+                    'time': round((item.end_time - item.start_time).total_seconds() / 3600, 2)}
+            print(temp)
+            res.append(temp)
 
     json_res = json.dumps(res)
     return JsonResponse({

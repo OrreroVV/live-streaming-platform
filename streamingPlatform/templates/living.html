@@ -430,6 +430,7 @@
                     let state = resp['res']
                     console.log(state)
                     if (state === "0") {
+
                         if (this.player) {
                             this.player.pause();
                             this.player.unload();
@@ -439,10 +440,39 @@
                             $("#loadingMessage").text("直播间已封禁");
                             $("#loadingMessage").show();
                         }
-                    } else {
 
-                        $("#loadingMessage").text("主播正在赶来的路上");
-                        this.reopen();
+
+                    }
+                    else {
+                        $.ajax({
+                            url: '/api/check_living',
+                            type: 'GET',
+                            data: {
+                                uid: "{{ uid }}"
+                            },
+                            success: (resp) => {
+                                let state = resp['res']
+                                if (state === "1") {
+                                    $("#loadingMessage").text("主播正在赶来的路上");
+                                    this.reopen();
+                                } else {
+                                    if (this.player) {
+                                        this.player.pause();
+                                        this.player.unload();
+                                        this.player.detachMediaElement();
+                                        this.player.destroy();
+                                        this.player = null;
+                                        $("#loadingMessage").text("主播正在赶来的路上");
+                                        $("#loadingMessage").show();
+                                    }
+                                }
+                            },
+                            error: () => {
+
+                            },
+                        });
+
+
                     }
                 },
                 error: () => {

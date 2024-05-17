@@ -4,14 +4,18 @@ from django.urls import path, include
 
 from streamingPlatform.urls.api.cancelFan import cancelFan
 from streamingPlatform.urls.api.cancelFollow import cancelFollows
+from streamingPlatform.urls.api.checkLiving import checkLiving
 from streamingPlatform.urls.api.checkRoomBan import checkRoomBan
 from streamingPlatform.urls.api.checkUserBan import checkUserBan
 from streamingPlatform.urls.api.getContact import getContact
 from streamingPlatform.urls.api.getFans import getFans
 from streamingPlatform.urls.api.getFollows import getFollows
+from streamingPlatform.urls.api.getUserInfo import getUserInfo
 from streamingPlatform.urls.api.get_live_counts import get_live_counts
 from streamingPlatform.urls.api.offLiving import offLiving
 from streamingPlatform.urls.api.onLiving import onLiving
+from streamingPlatform.urls.api.setContact import setContact
+from streamingPlatform.urls.api.setFollow import setFollow
 from streamingPlatform.urls.api.setRoomBan import setRoomBan
 from streamingPlatform.urls.api.setUserBan import setUserBan
 from streamingPlatform.views.Register import Register
@@ -38,5 +42,9 @@ urlpatterns = [
     path('set_user_ban/', setUserBan, name="setUserBan"),
     path('check_user_ban/', checkUserBan, name="setUserBan"),
     path('off_living/', offLiving, name="offLiving"),
-    path('on_living/', onLiving, name="offLiving"),
+    path('on_living/', onLiving, name="onLiving"),
+    path('check_living/', checkLiving, name="checkLiving"),
+    path('set_follow/', setFollow, name="setFollow"),
+    path('set_contact/', setContact, name="setContact"),
+    path('get_user_all_info/', getUserInfo, name="getUserInfo"),
 ]

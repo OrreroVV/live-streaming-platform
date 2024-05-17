@@ -238,6 +238,36 @@
 
 
 
+                        <!-- Button trigger modal -->
+                        <button
+                                id="chatting"
+                                type="button"
+                                class="btn btn-primary"
+                                style="
+                    padding: 8px 16px;
+                    background-color: #007bff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                  "
+                        >
+                            私聊
+                        </button>
+                                        <!-- Button trigger modal -->
+                        <button
+                                id="following"
+                                type="button"
+                                class="btn btn-primary"
+                                style="
+                    padding: 8px 16px;
+                    background-color: #007bff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                  "
+                        >
+                            关注
+                        </button>
 
                 <div class="row" style="display: flex; justify-content: center; color: #ffffff;  font-size: 30px;">
                     直播记录
@@ -288,14 +318,33 @@
 
 
 
-        $("#button_ban").click(() => {
-        let selectedValue = $("#duration").val();
+        $("#chatting").click(() => {
         $.ajax({
-            url: '/api/get_user_ban',
+            url: '/api/set_contact',
             type: 'GET',
             data: {
-                uid: "{{ uid }}",
-                time: selectedValue,
+                user1: "{{ uid }}",
+                user2: "{{ login_uid }}"
+            },
+            success: (resp) => {
+                window.location.href = "{% url 'message' %}";
+            },
+            error: () => {
+
+            },
+        });
+    });
+
+
+
+
+            $("#following").click(() => {
+        $.ajax({
+            url: '/api/set_follow',
+            type: 'GET',
+            data: {
+                user1: "{{ login_uid }}",
+                user2: "{{ uid }}"
             },
             success: (resp) => {
                 window.location.href = "{% url 'user_info' %}?uid={{ uid }}";
@@ -305,6 +354,8 @@
             },
         });
     });
+
+
 
 
 

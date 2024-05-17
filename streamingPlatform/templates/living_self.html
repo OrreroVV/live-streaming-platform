@@ -329,9 +329,7 @@
                          style="width: 1000px; height: 50px; margin-top: 20px; text-align: center; font-size: 24px;">
 
 
-
-
-                                                <!-- Button trigger modal -->
+                        <!-- Button trigger modal -->
                         <button
                                 type="button"
                                 class="btn btn-primary"
@@ -373,9 +371,6 @@
                                     <div class="modal-body">
 
 
-
-
-
                                         <p id="code_value"></p>
                                     </div>
 
@@ -392,7 +387,6 @@
                                 </div>
                             </div>
                         </div>
-
 
 
                     </div>
@@ -459,14 +453,12 @@
     }
 
 
-
     $("#button_off").click(() => {
         let selectedValue = $("#duration").val();
         $.ajax({
             url: '/api/off_living',
             type: 'GET',
-            data: {
-            },
+            data: {},
             success: (resp) => {
                 window.location.href = "{% url 'user_info' %}?uid={{ login_uid }}";
             },
@@ -475,8 +467,6 @@
             },
         });
     });
-
-
 
 
     class VideoPlayer {
@@ -516,6 +506,7 @@
                     let state = resp['res']
                     console.log(state)
                     if (state === "0") {
+
                         if (this.player) {
                             this.player.pause();
                             this.player.unload();
@@ -525,10 +516,39 @@
                             $("#loadingMessage").text("直播间已封禁");
                             $("#loadingMessage").show();
                         }
-                    } else {
 
-                        $("#loadingMessage").text("主播正在赶来的路上");
-                        this.reopen();
+
+                    }
+                    else {
+                        $.ajax({
+                            url: '/api/check_living',
+                            type: 'GET',
+                            data: {
+                                uid: "{{ uid }}"
+                            },
+                            success: (resp) => {
+                                let state = resp['res']
+                                if (state === "1") {
+                                    $("#loadingMessage").text("主播正在赶来的路上");
+                                    this.reopen();
+                                } else {
+                                    if (this.player) {
+                                        this.player.pause();
+                                        this.player.unload();
+                                        this.player.detachMediaElement();
+                                        this.player.destroy();
+                                        this.player = null;
+                                        $("#loadingMessage").text("主播正在赶来的路上");
+                                        $("#loadingMessage").show();
+                                    }
+                                }
+                            },
+                            error: () => {
+
+                            },
+                        });
+
+
                     }
                 },
                 error: () => {
@@ -629,25 +649,25 @@
 
 
         $.ajax({
-                url: '/api/check_user_ban',
-                type: 'GET',
-                data: {
-                    uid: "{{ login_uid }}"
-                },
-                success: (resp) => {
-                    let state = resp['res']
-                    console.log("state: ", state)
-                    if (state === "1") {
-                        send_message(login_uid, login_name, input_text);
-                        $("#msg").val("");
-                    } else {
-                        $("#msg").val("您已被禁言");
-                    }
-                },
-                error: () => {
+            url: '/api/check_user_ban',
+            type: 'GET',
+            data: {
+                uid: "{{ login_uid }}"
+            },
+            success: (resp) => {
+                let state = resp['res']
+                console.log("state: ", state)
+                if (state === "1") {
+                    send_message(login_uid, login_name, input_text);
+                    $("#msg").val("");
+                } else {
+                    $("#msg").val("您已被禁言");
+                }
+            },
+            error: () => {
 
-                },
-            });
+            },
+        });
 
 
     });

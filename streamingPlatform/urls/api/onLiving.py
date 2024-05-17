@@ -24,10 +24,20 @@ def onLiving(request):
         })
 
     users = Users.objects.filter(uid=user)[0]
+    lists = liveCounts.objects.filter(uid=users.uid)
+    for item in lists:
+        if item.end_time is None:
+            return JsonResponse({
+                'result': 'failed',
+            })
 
+    res = StreamCode.objects.filter(uid=users.uid)[0]
+    res.is_open = "1"
+    res.save()
     new_record = liveCounts(uid=users, end_time=None)
     new_record.save()
-
     return JsonResponse({
         'result': 'success',
     })
+
+

@@ -8,34 +8,22 @@ from streamingPlatform.models.fans.fans import Fans
 from streamingPlatform.models.liveCounts.liveCounts import liveCounts
 from streamingPlatform.models.roomBans.roomBans import roomBans
 from streamingPlatform.models.streamCode.streamCode import StreamCode
+from streamingPlatform.models.userContact.userContact import userContact
 from streamingPlatform.models.users.users import Users
 from datetime import datetime, timedelta
 from django.utils import timezone
 import re
-
-def offLiving(request):
+def setContact(request):
 
     data = request.GET
-    user = request.user
+    user1 = data['user1']
+    user2 = data['user2']
 
-    if user is None:
-        return JsonResponse({
-            'result': 'failed',
-        })
-
-    users = Users.objects.filter(uid=user)[0]
-
-    lists = liveCounts.objects.filter(uid=users.uid)
-
-    res = StreamCode.objects.filter(uid=users)[0]
-    res.is_open = "0"
+    user1 = Users.objects.filter(uid=user1)[0]
+    user2 = Users.objects.filter(uid=user2)[0]
+    print(user1, user2)
+    res = userContact(user1=user1, user2=user2, end_time=timezone.now())
     res.save()
-
-    for item in lists:
-        if item.end_time is None:
-            item.end_time = timezone.now()
-            item.save()
-            break
 
     return JsonResponse({
         'result': 'success',

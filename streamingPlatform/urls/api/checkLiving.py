@@ -12,31 +12,14 @@ from streamingPlatform.models.users.users import Users
 from datetime import datetime, timedelta
 from django.utils import timezone
 import re
-
-def offLiving(request):
+def checkLiving(request):
 
     data = request.GET
-    user = request.user
+    uid = data['uid']
 
-    if user is None:
-        return JsonResponse({
-            'result': 'failed',
-        })
-
-    users = Users.objects.filter(uid=user)[0]
-
-    lists = liveCounts.objects.filter(uid=users.uid)
-
-    res = StreamCode.objects.filter(uid=users)[0]
-    res.is_open = "0"
-    res.save()
-
-    for item in lists:
-        if item.end_time is None:
-            item.end_time = timezone.now()
-            item.save()
-            break
-
+    res = StreamCode.objects.filter(uid=uid)[0]
+    print("res.is_open: ", res.is_open)
     return JsonResponse({
         'result': 'success',
+        'res': res.is_open
     })

@@ -12,30 +12,25 @@ from streamingPlatform.models.users.users import Users
 from datetime import datetime, timedelta
 from django.utils import timezone
 import re
-
-def offLiving(request):
+def setFollow(request):
 
     data = request.GET
-    user = request.user
+    user1 = data['user1']
+    user2 = data['user2']
 
-    if user is None:
+    follower_user = Users.objects.filter(uid=user2)[0]
+    fan_user = Users.objects.filter(uid=user1)[0]
+    print(follower_user, fan_user)
+
+    res = Fans.objects.filter(follower=follower_user, fan=fan_user)
+    print(res)
+    if res.exists():
         return JsonResponse({
-            'result': 'failed',
+            'result': 'success',
         })
 
-    users = Users.objects.filter(uid=user)[0]
-
-    lists = liveCounts.objects.filter(uid=users.uid)
-
-    res = StreamCode.objects.filter(uid=users)[0]
-    res.is_open = "0"
-    res.save()
-
-    for item in lists:
-        if item.end_time is None:
-            item.end_time = timezone.now()
-            item.save()
-            break
+    new_record = Fans(follower=follower_user, fan=fan_user)
+    new_record.save()
 
     return JsonResponse({
         'result': 'success',

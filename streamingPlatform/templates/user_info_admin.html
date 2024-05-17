@@ -36,12 +36,7 @@
           } */
 
 
-
-
-
-
-
-                .scroll-box {
+        .scroll-box {
             width: 90%;
             height: 50vh;
             overflow-y: auto;
@@ -103,8 +98,6 @@
         .small-text {
             font-size: 30px; /* 设置合适的字体大小 */
         }
-
-
 
 
     </style>
@@ -177,149 +170,21 @@
                     <div style="width: 200px; height: 50px"></div>
                 </div>
 
-                <div class="row" style="font-size: 2em">
-                    <div class="row">
-                        <div
-                                class="col-1"
-                                style="display: flex; flex-direction: row-reverse"
-                        >
-                            <div class="avatar">
-                                <img
-                                        alt="Profile picture placeholder"
-                                        class="rounded-full"
-                                        height="100"
-                                        width="100"
-                                        src="{{ url }}"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="col-11">
-                            <div class="intro">
-                                <div class="font-semibold">{{ user_name }}</div>
-                                <div style="display: flex">
-                                    <div class="text-sm text-gray-400" style="display: flex">
-                                        <div>
-                                            <div
-                                                    style="display: flex; font-size: 1.4em"
-                                                    id="follow"
-                                            >
-                                                <div>关注:</div>
-                                                <div>{{ follow }}</div>
-                                            </div>
-                                        </div>
-                                        <div>|</div>
-                                        <div>
-                                            <div
-                                                    style="display: flex; font-size: 1.4em"
-                                                    id="fan"
-                                            >
-                                                <div>粉丝:</div>
-                                                <div>{{ fan }}</div>
-                                            </div>
-                                        </div>
-                                        <div>|</div>
-                                        <div>
-                                            <div style="display: flex; font-size: 1.4em">
-                                                <div>UID:</div>
-                                                <div>{{ uid }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div style="width: 200px; height: 30px"></div>
-                </div>
-
-
-                <!-- Button trigger modal -->
-                        <button
-                                type="button"
-                                class="btn btn-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
-                                style="
-                    padding: 8px 16px;
-                    background-color: #007bff;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                  "
-                        >
-                            禁言用户
-                        </button>
-
-                        <!-- Modal -->
-                        <div
-                                class="modal fade"
-                                id="exampleModal"
-                                tabindex="-1"
-                                aria-labelledby="exampleModalLabel"
-                                style="color: black"
-                                aria-hidden="true"
-                        >
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                            禁言时间
-                                        </h1>
-                                        <button
-                                                type="button"
-                                                class="btn-close"
-                                                data-bs-dismiss="modal"
-                                                aria-label="Close"
-                                        ></button>
-                                    </div>
-                                    <div class="modal-body">
-
-
-                                        <select id="duration" class="bg-gray-700 text-white px-2 py-1 rounded">
-                                            <option value="30">30分钟</option>
-                                            <option value="60">1小时</option>
-                                            <option value="120">2小时</option>
-                                            <option value="1440">24小时</option>
-                                            <option value="59940">999小时</option>
-                                        </select>
-
-
-                                        <p id="code_value"></p>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button
-                                                type="button"
-                                                class="btn"
-                                                data-bs-dismiss="modal"
-                                        >
-                                            关闭
-                                        </button>
-                                        <button type="button" class="btn" id="button_ban">封禁</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
 
 
 
                 <div class="row" style="display: flex; justify-content: center; color: #ffffff;  font-size: 30px;">
-                    直播记录
+                    用户管理
                 </div>
                 <div class="row">
                     <div class="mt-6">
                         <div class="row" style="font-size: 2em">
-                            <div id="live_counts_list" class="scroll-box"></div>
+                            <div id="user_manage" class="scroll-box"></div>
                         </div>
                     </div>
                 </div>
+
+
 
             </div>
         </div>
@@ -357,52 +222,27 @@
     })
 
 
-
-
-        $("#button_ban").click(() => {
-        let selectedValue = $("#duration").val();
-        $.ajax({
-            url: '/api/set_user_ban',
-            type: 'GET',
-            data: {
-                uid: "{{ uid }}",
-                time: selectedValue,
-            },
-            success: (resp) => {
-                window.location.href = "{% url 'user_info' %}?uid={{ uid }}";
-            },
-            error: () => {
-
-            },
-        });
-    });
-
-
-
-
-    const $friendList = $('#live_counts_list');
+    const $userManageList = $('#user_manage');
     $.ajax({
-        url: '/api/get_live_counts',
+        url: '/api/get_user_all_info',
         type: 'GET',
         data: {
-            uid: "{{ uid }}"
         },
         success: (resp) => {
             let lists = JSON.parse(resp['res'])
-            console.log(lists)
             for (let i = 0; i < lists.length; i++) {
                 let item = lists[i];
-                console.log(item);
                 const $friendBox = $('<div>').addClass('friend-box');
                 $friendBox.html(`
                 <div style="width:100%;">
-    <h3 style="display: inline-block; margin: 0;" class="small-text">开始时间：${item.start}</h3>
-<h3 style="display: inline-block; margin: 0;" class="small-text">    结束时间：${item.end}</h3>
-<h3 style="display: inline-block; margin: 0;" class="small-text">    直播时长：${item.time} h</h3>
+    <h3 style="display: inline-block; margin: 0;" class="small-text">用户ID：${item.uid}</h3>
+<h3 style="display: inline-block; margin: 0;" class="small-text">    用户名：${item.end}</h3>
+<h3 style="display: inline-block; margin: 0;" class="small-text">    禁播结束时间：${item.time}</h3>
+<h3 style="display: inline-block; margin: 0;" class="small-text">    禁言结束时间：${item.time}</h3>
 </div>
         `);
 
-                $friendList.append($friendBox);
+                $userManageList.append($friendBox);
             }
         },
         error: () => {

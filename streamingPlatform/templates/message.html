@@ -338,7 +338,7 @@
                     if (temp > item) {
                         url = item['uid'] + "ABCDXYZWOPQRSTUV" + temp;
                     } else {
-                        url = temp + ".ABCDXYZWOPQRSTUV." + item['uid'];
+                        url = temp + "ABCDXYZWOPQRSTUV" + item['uid'];
                     }
                     url = "ws://localhost:9000/ws/message/" + url + "/";
                     console.log(url)

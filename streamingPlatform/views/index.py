@@ -79,14 +79,18 @@ def user_info(request):
         fan = fan.count()
         follow = follow.count()
 
-
-
         if login_uid == main_uid:
-            print("get: self", login_uid, user_name, url, uid)
+            login_users = Users.objects.filter(uid=login_user.username)[0]
+            if login_users.level == "1" or login_users.level == "2":
+                return render(request, "user_info_admin.html",
+                              {"fan": fan, "follow": follow, "login_uid": login_uid, "user_name": user_name, "url": url,
+                               "uid": uid})
+
             return render(request, "user_info_self.html", {"fan": fan, "follow": follow, "login_uid": login_uid, "user_name": user_name, "url": url, "uid": uid})
         else:
             login_users = Users.objects.filter(uid=login_user.username)[0]
             if login_users.level == "1" or login_users.level == "2":
+
                 return render(request, "user_info_admin.html",
                               {"fan": fan, "follow": follow, "login_uid": login_uid, "user_name": user_name, "url": url,
                                "uid": uid})
